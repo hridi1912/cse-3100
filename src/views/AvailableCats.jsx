@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
 const availableCats = [
-  { name: 'Whiskers', age: '2' },
-  { name: 'Mittens', age: '2' },
-  { name: 'Shadow', age: '1' },
-  { name: 'Pumpkin', age: '3' },
-  { name: 'Luna', age: '4' },
-  { name: 'Simba', age: '2' },
+  { name: 'Whiskers', age: '2',breed:"Peterbald" },
+  { name: 'Mittens', age: '2',breed:"Bengal" },
+  { name: 'Shadow', age: '1',breed:"Sphynx" },
+  { name: 'Pumpkin', age: '3',breed:"Persion" },
+  { name: 'Luna', age: '4',breed:"Birman" },
+  { name: 'Simba', age: '2',breed:"Siamese" },
 ];
 
 export default function AvailableCats() {
@@ -40,10 +40,13 @@ export default function AvailableCats() {
         {cats.map((cat, i) => (
           <div key={i} className="col-md-4">
             <div className="cat-card">
-              <img src={cat.image} alt={cat.name} className="img-fluid mb-2" style={{ borderRadius: '8px', height: '200px', objectFit: 'cover' }} />
+              <img src={cat.image} alt={cat.name} className="img-fluid mb-2" style={{ borderRadius: '8px', height: '200px', objectFit: 'cover', borderBottom: '1px solid black', }} />
               <div className="cat-info">
-                <h3 className="h5 mb-1">{cat.name}</h3>
-                <p className="mb-0">Age: {cat.age}</p>
+                <h3 className="h5 mb-1" style={{padding: '4px',
+                  backgroundColor: '#f8f9fa',fontStyle:"italic",
+                  textAlign: 'center',color:'darkcyan'}}>{cat.name}</h3>
+                <p className="mb-0" style={{fontFamily:'cursive'}}>Age: {cat.age}</p>
+                <p style={{fontFamily:'cursive'}}>Breed: {cat.breed}</p>
               </div>
             </div>
           </div>
