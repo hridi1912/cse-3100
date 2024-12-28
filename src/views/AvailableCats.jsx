@@ -11,7 +11,8 @@ const availableCats = [
 
 export default function AvailableCats() {
   const [cats, setCats] = useState([]);
-
+  const [searchName, setSearchName] = useState('');
+  const [selectedBreed, setSelectedBreed] = useState('All');
   useEffect(() => {
     // Fetch cat images from an API endpoint and assign it to the featuredCats list
     const fetchCatImages = async () => {
@@ -30,14 +31,39 @@ export default function AvailableCats() {
 
     fetchCatImages();
   }, []);
-
+ const filterCats= cats.filter((cat)=>{
+  const matchBreed=selectedBreed==='All' || cat.breed===selectedBreed;
+  const matchName=cat.name.toLowerCase().includes(searchName.toLowerCase());
+  return matchBreed && matchName;
+ }) 
+ 
+ const breeds = ['All', ...new Set(availableCats.map((cat) => cat.breed))];
+  
   return (
-    <section className="text-center mt-4">
-      <h2>Available Cats</h2>
-      <p>Meet our adorable cats looking for their forever home!</p>
+    <section className="text-center mt-4" >
+      <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 16px',
+          marginBottom: '16px',
+        }}>
+      <h2 style={{ marginBottom: '0', textAlign: 'left' ,fontFamily:'cursive'}}>Available Cats</h2>
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <input type="text" placeholder='Search by name' value={searchName} onChange={(e)=>{setSearchName(e.target.value)}}/>
+      
+        <select value={selectedBreed} onChange={(e)=>{setSelectedBreed(e.target.value)}}>
+          {breeds.map((breed,index)=>(
+                <option value={breed} key={index}>{breed}</option>
+          ))}
+        </select>
+        </div>
+      </div>
+      <p style={{ fontSize: '16px', marginBottom: '16px', marginLeft:'3px',textAlign:'left',fontFamily:'cursive'}}>Meet our adorable cats looking for their forever home!</p>
 
+      {/*showing cats*/}
       <div className="mt-2 row g-4 cats-container" id="cats-container">
-        {cats.map((cat, i) => (
+        {filterCats.length>0?(filterCats.map((cat, i) => (
           <div key={i} className="col-md-4">
             <div className="cat-card">
               <img src={cat.image} alt={cat.name} className="img-fluid mb-2" style={{ borderRadius: '8px', height: '200px', objectFit: 'cover', borderBottom: '1px solid black', }} />
@@ -50,7 +76,9 @@ export default function AvailableCats() {
               </div>
             </div>
           </div>
-        ))}
+        ))):(
+          <p>No cats found !</p>
+        )}
       </div>
     </section>
   );
